@@ -7,7 +7,7 @@ import { ContractData } from "./components/ContractData";
 import { fetchContractData, ContractData as ContractDataType } from "./lib/contracts/contracts";
 
 export default function Home() {
-  const { address, isConnected, connectWallet, disconnectWallet, signer, error } = useWallet();
+  const { address, isConnected, connectWallet, disconnectWallet, signer, error, isLoading: walletLoading } = useWallet();
   const [contractData, setContractData] = useState<ContractDataType | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [dataError, setDataError] = useState<string | null>(null);
@@ -29,13 +29,26 @@ export default function Home() {
     setDataError(null);
 
     try {
+      // Debug: Check network first
+      if (signer.provider) {
+        const network = await signer.provider.getNetwork();
+        console.log("📡 Current network:", {
+          chainId: Number(network.chainId),
+          name: network.name,
+        });
+        
+        if (Number(network.chainId) !== 1337) {
+          setDataError(`Wrong network! You're on chain ID ${Number(network.chainId)}, but contracts are on Hardhat Local (1337). Please switch MetaMask to Hardhat Local network.`);
+          setIsLoading(false);
+          return;
+        }
+      }
+      
       const data = await fetchContractData(address, signer);
       setContractData(data);
     } catch (err: any) {
       console.error("Error loading contract data:", err);
-      setDataError(
-        "Failed to load contract data. Make sure contracts are deployed and addresses are correct."
-      );
+      setDataError(err.message || "Failed to load contract data. Make sure contracts are deployed and addresses are correct.");
     } finally {
       setIsLoading(false);
     }
@@ -86,8 +99,17 @@ export default function Home() {
               </div>
 
               <button
-                onClick={isConnected ? disconnectWallet : connectWallet}
-                className="w-full rounded-lg bg-gradient-to-r from-purple-600 to-blue-600 px-8 py-3 font-semibold text-white transition-all hover:from-purple-700 hover:to-blue-700 hover:shadow-lg active:scale-95 sm:w-auto"
+                onClick={(e) => {
+                  e.preventDefault();
+                  console.log("Button clicked, isConnected:", isConnected);
+                  if (isConnected) {
+                    disconnectWallet();
+                  } else {
+                    connectWallet();
+                  }
+                }}
+                className="w-full rounded-lg bg-gradient-to-r from-purple-600 to-blue-600 px-8 py-3 font-semibold text-white transition-all hover:from-purple-700 hover:to-blue-700 hover:shadow-lg active:scale-95 sm:w-auto disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled={walletLoading}
               >
                 {isConnected ? "Disconnect" : "Connect Wallet"}
               </button>
@@ -95,13 +117,35 @@ export default function Home() {
 
             {error && (
               <div className="mt-4 rounded-lg bg-red-50 p-4 text-red-700 dark:bg-red-900/20 dark:text-red-400">
-                <p className="text-sm">{error}</p>
+                <p className="text-sm font-semibold">⚠️ {error}</p>
+                {error.includes("install") && (
+                  <p className="mt-2 text-xs">
+                    If MetaMask is installed, try refreshing the page or check if it's enabled.
+                  </p>
+                )}
               </div>
             )}
 
             {dataError && (
               <div className="mt-4 rounded-lg bg-yellow-50 p-4 text-yellow-700 dark:bg-yellow-900/20 dark:text-yellow-400">
                 <p className="text-sm">{dataError}</p>
+              </div>
+            )}
+
+            {typeof window !== "undefined" && !window.ethereum && !error && !isConnected && (
+              <div className="mt-4 rounded-lg bg-blue-50 p-4 text-blue-700 dark:bg-blue-900/20 dark:text-blue-400">
+                <p className="text-sm">
+                  <strong>💡 MetaMask not detected.</strong> Please{" "}
+                  <a 
+                    href="https://metamask.io/download" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="underline font-semibold hover:text-blue-900"
+                  >
+                    install MetaMask
+                  </a>{" "}
+                  extension to connect your wallet. After installing, refresh this page.
+                </p>
               </div>
             )}
           </div>
