@@ -8,6 +8,7 @@ import { fetchContractData, ContractData as ContractDataType } from "./lib/contr
 import MintNFTForm from "./components/MintNFTForm";
 import MintERC1155Form from "./components/MintERC1155Form";
 import VaultForm from "./components/VaultForm";
+import MachineOnboardForm from "./components/MachineOnboardForm";
 
 export default function Home() {
   const { address, isConnected, connectWallet, disconnectWallet, signer, error, isLoading: walletLoading } = useWallet();
@@ -165,6 +166,12 @@ export default function Home() {
             <h2 className="mb-6 text-center text-3xl font-bold text-gray-900 dark:text-white">
               Interact with Contracts
             </h2>
+            
+            {/* Machine DeFi Form - Full Width */}
+            <div className="mb-6">
+              <MachineOnboardForm signer={signer} userAddress={address} />
+            </div>
+            
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
               {/* Mint NFT Form */}
               <MintNFTForm signer={signer} userAddress={address} />

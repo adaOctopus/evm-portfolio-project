@@ -57,3 +57,37 @@ export const SecureVaultABI = [
   "function paused() view returns (bool)",
 ];
 
+export const MachineDeFiABI = [
+  "function registerMachine(address operator, string memory name, string memory metadataURI, uint256 totalShares) returns (uint256)",
+  "function getMachine(uint256 machineId) view returns (tuple(uint256 machineId, address operator, string name, string metadataURI, uint256 totalShares, uint256 totalRevenue, uint256 lastRevenueShare, uint256 creationTimestamp, bool active))",
+  "function getMachineToken(uint256 machineId) view returns (address)",
+  "function getOperatorMachines(address operator) view returns (uint256[])",
+  "function reportRevenue(uint256 machineId) payable",
+  "function claimRevenue(uint256 machineId, uint256 snapshotId)",
+  "function batchClaimRevenue(uint256 machineId, uint256[] memory snapshotIds)",
+  "function updateMachineMetadata(uint256 machineId, string memory newMetadataURI)",
+  "function setMachineStatus(uint256 machineId, bool active)",
+  "function transferOperator(uint256 machineId, address newOperator)",
+  "function getClaimableRevenue(uint256 machineId, address user) view returns (uint256 totalClaimable, uint256[] memory snapshotIds, uint256[] memory amounts)",
+  "function machines(uint256) view returns (uint256 machineId, address operator, string name, string metadataURI, uint256 totalShares, uint256 totalRevenue, uint256 lastRevenueShare, uint256 creationTimestamp, bool active)",
+  "function machineTokens(uint256) view returns (address)",
+  "function shareSnapshots(uint256, uint256) view returns (uint256 snapshotId, uint256 totalShares, uint256 revenueAmount, uint256 distributedAmount, bool completed)",
+  "function snapshotCounters(uint256) view returns (uint256)",
+  "function platformFeeBps() view returns (uint256)",
+  "function minRevenueThreshold() view returns (uint256)",
+  "function owner() view returns (address)",
+  "event MachineRegistered(uint256 indexed machineId, address indexed operator, string name, string metadataURI, address tokenAddress)",
+  "event RevenueReported(uint256 indexed machineId, uint256 amount, uint256 snapshotId, address indexed reporter)",
+  "event RevenueClaimed(uint256 indexed machineId, uint256 indexed snapshotId, address indexed user, uint256 amount)",
+];
+
+export const MachineTokenABI = [
+  "function name() view returns (string)",
+  "function symbol() view returns (string)",
+  "function totalSupply() view returns (uint256)",
+  "function balanceOf(address) view returns (uint256)",
+  "function decimals() view returns (uint8)",
+  "function transfer(address to, uint256 amount) returns (bool)",
+  "function machineId() view returns (uint256)",
+];
+
