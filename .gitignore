@@ -49,3 +49,6 @@ next-env.d.ts
 *.swp
 *.swo
 *~
+
+# Interview preparation (personal notes - not to be pushed)
+INTERVIEW_PREP.md
