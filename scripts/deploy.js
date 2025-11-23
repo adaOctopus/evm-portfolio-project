@@ -30,15 +30,25 @@ async function main() {
   const multiTokenAddress = await myMultiToken.getAddress();
   console.log("MyMultiToken deployed to:", multiTokenAddress);
 
+  // Deploy SecureVault
+  console.log("\n--- Deploying SecureVault ---");
+  const SecureVault = await ethers.getContractFactory("SecureVault");
+  const secureVault = await SecureVault.deploy();
+  await secureVault.waitForDeployment();
+  const vaultAddress = await secureVault.getAddress();
+  console.log("SecureVault deployed to:", vaultAddress);
+
   console.log("\n=== Deployment Summary ===");
   console.log("ERC20 Token (MyToken):", tokenAddress);
   console.log("ERC721 NFT (MyNFT):", nftAddress);
   console.log("ERC1155 Multi-Token (MyMultiToken):", multiTokenAddress);
+  console.log("SecureVault:", vaultAddress);
   console.log("\n✅ Copy these addresses and update app/lib/contracts/addresses.ts");
   console.log("\n=== Copy this into addresses.ts ===");
   console.log(`MyToken: "${tokenAddress}",`);
   console.log(`MyNFT: "${nftAddress}",`);
   console.log(`MyMultiToken: "${multiTokenAddress}",`);
+  console.log(`SecureVault: "${vaultAddress}",`);
 }
 
 main()

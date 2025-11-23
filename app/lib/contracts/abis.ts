@@ -43,3 +43,17 @@ export const MyMultiTokenABI = [
   "function uri(uint256) view returns (string)",
 ];
 
+export const SecureVaultABI = [
+  "function deposit() payable",
+  "function withdraw(uint256 amount)",
+  "function emergencyWithdraw()",
+  "function pause()",
+  "function unpause()",
+  "function deposits(address) view returns (uint256)",
+  "function totalDeposits() view returns (uint256)",
+  "function getBalance(address user) view returns (uint256)",
+  "function getContractBalance() view returns (uint256)",
+  "function owner() view returns (address)",
+  "function paused() view returns (bool)",
+];
+

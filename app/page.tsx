@@ -5,6 +5,9 @@ import { useState, useEffect } from "react";
 import { useWallet } from "./hooks/useWallet";
 import { ContractData } from "./components/ContractData";
 import { fetchContractData, ContractData as ContractDataType } from "./lib/contracts/contracts";
+import MintNFTForm from "./components/MintNFTForm";
+import MintERC1155Form from "./components/MintERC1155Form";
+import VaultForm from "./components/VaultForm";
 
 export default function Home() {
   const { address, isConnected, connectWallet, disconnectWallet, signer, error, isLoading: walletLoading } = useWallet();
@@ -155,6 +158,27 @@ export default function Home() {
 
         {/* Contract Data Display */}
         <ContractData data={contractData} isLoading={isLoading} />
+
+        {/* Interaction Forms */}
+        {isConnected && address && signer && (
+          <div className="mx-auto mt-12 max-w-6xl">
+            <h2 className="mb-6 text-center text-3xl font-bold text-gray-900 dark:text-white">
+              Interact with Contracts
+            </h2>
+            <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+              {/* Mint NFT Form */}
+              <MintNFTForm signer={signer} userAddress={address} />
+              
+              {/* Mint ERC1155 Form */}
+              <MintERC1155Form signer={signer} userAddress={address} />
+            </div>
+            
+            {/* SecureVault Form - Full Width */}
+            <div className="mt-6">
+              <VaultForm signer={signer} userAddress={address} />
+            </div>
+          </div>
+        )}
 
         {/* Info Section */}
         {isConnected && (

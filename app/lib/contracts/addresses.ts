@@ -6,9 +6,10 @@ export const CONTRACT_ADDRESSES = {
   // Deployed contract addresses (updated after deployment)
   // NOTE: These addresses change every time Hardhat node restarts!
   // Run: npm run deploy:local to get fresh addresses
-  MyToken: process.env.NEXT_PUBLIC_TOKEN_ADDRESS || "0x0165878A594ca255338adfa4d48449f69242Eb8F",
-  MyNFT: process.env.NEXT_PUBLIC_NFT_ADDRESS || "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853",
-  MyMultiToken: process.env.NEXT_PUBLIC_MULTITOKEN_ADDRESS || "0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6",
+  MyToken: process.env.NEXT_PUBLIC_TOKEN_ADDRESS || "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318",
+  MyNFT: process.env.NEXT_PUBLIC_NFT_ADDRESS || "0x610178dA211FEF7D417bC0e6FeD39F05609AD788",
+  MyMultiToken: process.env.NEXT_PUBLIC_MULTITOKEN_ADDRESS || "0xB7f8BC63BbcaD18155201308C8f3540b07f84F5e",
+  SecureVault: process.env.NEXT_PUBLIC_VAULT_ADDRESS || "0xA51c1fc2f0D1a1b8494Ed1FE312d7C3a78Ed91C0",
 };
 
 // For local Hardhat network
