@@ -29,25 +29,27 @@ export default function Home() {
     setDataError(null);
 
     try {
-      // Debug: Check network first
-      if (signer.provider) {
-        const network = await signer.provider.getNetwork();
-        console.log("📡 Current network:", {
-          chainId: Number(network.chainId),
-          name: network.name,
-        });
-        
-        if (Number(network.chainId) !== 1337) {
-          setDataError(`Wrong network! You're on chain ID ${Number(network.chainId)}, but contracts are on Hardhat Local (1337). Please switch MetaMask to Hardhat Local network.`);
-          setIsLoading(false);
-          return;
-        }
-      }
+      // Skip network check - assume network is correct if wallet is connected
+      // Network verification happens during wallet connection
+      console.log("📦 Starting to fetch contract data...");
       
-      const data = await fetchContractData(address, signer);
+      // Fetch contract data with timeout
+      const timeoutPromise = new Promise((_, reject) => 
+        setTimeout(() => reject(new Error("Contract data fetch timeout after 10 seconds")), 10000)
+      );
+      
+      const dataPromise = fetchContractData(address, signer);
+      const data = await Promise.race([dataPromise, timeoutPromise]) as ContractDataType;
+      
+      console.log("✅ Contract data fetched successfully:", data);
       setContractData(data);
     } catch (err: any) {
       console.error("Error loading contract data:", err);
+      console.error("Error details:", {
+        message: err.message,
+        code: err.code,
+        stack: err.stack,
+      });
       setDataError(err.message || "Failed to load contract data. Make sure contracts are deployed and addresses are correct.");
     } finally {
       setIsLoading(false);

@@ -44,71 +44,16 @@ export const fetchContractData = async (
       throw new Error("No provider available from signer");
     }
 
-    // ALWAYS check network directly from MetaMask (most reliable)
-    const targetChainId = LOCAL_NETWORK.chainIdNumber;
-    let currentChainId: number;
-
-    if (typeof window !== "undefined" && window.ethereum) {
-      // Get chain ID directly from MetaMask
-      const chainIdHex = await window.ethereum.request({ method: "eth_chainId" });
-      currentChainId = parseInt(chainIdHex, 16);
-      console.log("🔍 MetaMask chain ID (direct):", currentChainId, "Expected:", targetChainId);
-    } else {
-      throw new Error("MetaMask not available");
-    }
-
-    // If on wrong network, try to switch automatically
-    if (currentChainId !== targetChainId) {
-      console.warn(`⚠️ Wrong network! MetaMask is on Chain ID: ${currentChainId}, but contracts need Chain ID: ${targetChainId}`);
-      
-      // Try to switch network automatically
-      try {
-        await window.ethereum.request({
-          method: "wallet_switchEthereumChain",
-          params: [{ chainId: LOCAL_NETWORK.chainId }],
-        });
-        console.log("✅ Network switch requested");
-        
-        // Wait for network to update
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        
-        // Re-check network after switch
-        const newChainIdHex = await window.ethereum.request({ method: "eth_chainId" });
-        const newChainId = parseInt(newChainIdHex, 16);
-        
-        if (newChainId !== targetChainId) {
-          throw new Error(`Network switch failed. Please manually switch MetaMask to Hardhat Local (Chain ID: ${targetChainId})`);
-        }
-      } catch (switchError: any) {
-        // If network doesn't exist, try to add it
-        if (switchError.code === 4902) {
-          console.log("Network doesn't exist, adding Hardhat Local...");
-          try {
-            await window.ethereum.request({
-              method: "wallet_addEthereumChain",
-              params: [LOCAL_NETWORK],
-            });
-            console.log("✅ Network added");
-            await new Promise(resolve => setTimeout(resolve, 1000));
-          } catch (addError: any) {
-            throw new Error(`Please add Hardhat Local network in MetaMask (Chain ID: ${targetChainId})`);
-          }
-        } else if (switchError.code === 4001) {
-          throw new Error("Network switch was rejected. Please switch MetaMask to Hardhat Local manually.");
-        } else {
-          throw new Error(`Could not switch network. Please switch MetaMask to Hardhat Local (Chain ID: ${targetChainId})`);
-        }
-      }
-    } else {
-      console.log("✅ Network is correct!");
-    }
-
     // Verify contracts exist at the addresses
+    console.log("📦 Checking if contracts exist...");
     const tokenCode = await provider.getCode(CONTRACT_ADDRESSES.MyToken);
     console.log("🔍 Token contract code length:", tokenCode.length);
+    
     if (tokenCode === "0x" || tokenCode.length <= 2) {
       throw new Error(`No contract found at MyToken address ${CONTRACT_ADDRESSES.MyToken}. Contracts may not be deployed. Run: npm run deploy:local`);
     }
+    
+    console.log("✅ Contracts exist, fetching data...");
 
     const tokenContract = getMyTokenContract(signer);
     const nftContract = getMyNFTContract(signer);
