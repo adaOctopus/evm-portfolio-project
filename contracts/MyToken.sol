@@ -18,7 +18,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 contract MyToken is ERC20, Ownable {
     uint256 public constant INITIAL_SUPPLY = 1000000 * 10**18; // 1 million tokens with 18 decimals
 
-    event Withdraw(address indexed to, uint256 amount);
+    event Withdraw(address indexed to, uint256 amount); 
 
     constructor() ERC20("MyToken", "MTK") Ownable(msg.sender) {
         _mint(msg.sender, INITIAL_SUPPLY);
