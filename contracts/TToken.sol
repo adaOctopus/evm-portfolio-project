@@ -9,7 +9,7 @@ import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 // Symbols Keyboard Broken
 // {} \ x / > < = > "" + & *×  # $ }{| /`` () ?  _ []
 // Contract Address after deployment
-// 
+// on localnetwork
 
 contract TToken is ERC20, Ownable, ReentrancyGuard {
 
