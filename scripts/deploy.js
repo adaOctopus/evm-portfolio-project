@@ -38,6 +38,20 @@ async function main() {
   const vaultAddress = await secureVault.getAddress();
   console.log("SecureVault deployed to:", vaultAddress);
 
+  console.log("\n--- Deploying TToken ---");
+  const TToken = await ethers.getContractFactory("TToken");
+  const tToken = await TToken.deploy();
+  await tToken.waitForDeployment();
+  const tTokenAddress = await tToken.getAddress();
+  console.log("TToken deployed to:", tTokenAddress);
+
+  console.log("\n--- Deploying TokenHandler ---");
+  const TokenHandler = await ethers.getContractFactory("TokenHandler");
+  const tokenHandler = await TokenHandler.deploy();
+  await tokenHandler.waitForDeployment();
+  const tokenHandlerAddress = await tokenHandler.getAddress();
+  console.log("TokenHandler deployed to:", tokenHandlerAddress);
+
   console.log("\n=== Deployment Summary ===");
   console.log("ERC20 Token (MyToken):", tokenAddress);
   console.log("ERC721 NFT (MyNFT):", nftAddress);
@@ -49,6 +63,8 @@ async function main() {
   console.log(`MyNFT: "${nftAddress}",`);
   console.log(`MyMultiToken: "${multiTokenAddress}",`);
   console.log(`SecureVault: "${vaultAddress}",`);
+  console.log("TokenHandler:", tokenHandlerAddress);
+  console.log("TToken:", tTokenAddress);
 }
 
 main()

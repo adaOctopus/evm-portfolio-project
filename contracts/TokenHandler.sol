@@ -5,11 +5,11 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
- * @title UniversalVault
+ * @title TokenHandler
  * @dev Vault contract for ERC20 token deposits and withdrawals
  * @notice ERC777 support removed - OpenZeppelin v5+ no longer includes ERC777
  */
-contract UniversalVault is Ownable {
+contract TokenHandler is Ownable {
     constructor() Ownable(msg.sender) {}
 
     event TokensDeposited(address indexed from, address indexed token, uint256 amount);

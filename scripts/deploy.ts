@@ -60,6 +60,8 @@ async function main() {
       MyToken: tokenAddress,
       MyNFT: nftAddress,
       MyMultiToken: multiTokenAddress,
+      TokenHandler: tokenHandlerAddress,
+      TToken: tTokenAddress,
     },
     deployer: deployer.address,
   };
