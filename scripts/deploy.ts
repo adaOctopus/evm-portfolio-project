@@ -30,10 +30,27 @@ async function main() {
   const multiTokenAddress = await myMultiToken.getAddress();
   console.log("MyMultiToken deployed to:", multiTokenAddress);
 
+  console.log("\n--- Deploying TokenHandler ---");
+  const TokenHandler = await ethers.getContractFactory("TokenHandler");
+  const tokenHandler = await TokenHandler.deploy();
+  await tokenHandler.waitForDeployment();
+  const tokenHandlerAddress = await tokenHandler.getAddress();
+  console.log("TokenHandler deployed to:", tokenHandlerAddress);
+
+  console.log("\n--- Deploying TToken ---");
+  const TToken = await ethers.getContractFactory("TToken");
+  const tToken = await TToken.deploy();
+  await tToken.waitForDeployment();
+  const tTokenAddress = await tToken.getAddress();
+  console.log("TToken deployed to:", tTokenAddress);
+
+
   console.log("\n=== Deployment Summary ===");
   console.log("ERC20 Token (MyToken):", tokenAddress);
   console.log("ERC721 NFT (MyNFT):", nftAddress);
   console.log("ERC1155 Multi-Token (MyMultiToken):", multiTokenAddress);
+  console.log("TokenHandler:", tokenHandlerAddress);
+  console.log("TToken:", tTokenAddress);
   console.log("\nSave these addresses to use in your frontend!");
 
   // Export addresses for frontend use
