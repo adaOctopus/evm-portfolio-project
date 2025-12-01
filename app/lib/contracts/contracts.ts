@@ -1,6 +1,6 @@
 import { Contract, JsonRpcSigner, formatEther } from "ethers";
 import { CONTRACT_ADDRESSES, LOCAL_NETWORK } from "./addresses";
-import { MyTokenABI, MyNFTABI, MyMultiTokenABI } from "./abis";
+import { MyTokenABI, MyNFTABI, MyMultiTokenABI, TokenHandlerABI, TTokenABI } from "./abis";
 
 export const getMyTokenContract = (signer: JsonRpcSigner) => {
   return new Contract(CONTRACT_ADDRESSES.MyToken, MyTokenABI, signer);
@@ -12,6 +12,14 @@ export const getMyNFTContract = (signer: JsonRpcSigner) => {
 
 export const getMyMultiTokenContract = (signer: JsonRpcSigner) => {
   return new Contract(CONTRACT_ADDRESSES.MyMultiToken, MyMultiTokenABI, signer);
+};
+
+export const getTokenHandlerContract = (signer: JsonRpcSigner) => {
+  return new Contract(CONTRACT_ADDRESSES.TokenHandler, TokenHandlerABI, signer);
+};
+
+export const getTTokenContract = (signer: JsonRpcSigner) => {
+  return new Contract(CONTRACT_ADDRESSES.TToken, TTokenABI, signer);
 };
 
 export interface ContractData {

@@ -43,6 +43,27 @@ export const MyMultiTokenABI = [
   "function uri(uint256) view returns (string)",
 ];
 
+export const TokenHandlerABI = [
+  "function depositERC20(address token, uint256 amount)",
+  "function withdraw(address token, uint256 amount)",
+  "function getBalance(address token) view returns (uint256)",
+  "function owner() view returns (address)",
+];
+
+export const TTokenABI = [
+  "function name() view returns (string)",
+  "function symbol() view returns (string)",
+  "function decimals() view returns (uint8)",
+  "function totalSupply() view returns (uint256)",
+  "function balanceOf(address) view returns (uint256)",
+  "function transfer(address to, uint256 amount) returns (bool)",
+  "function mint(address to, uint256 amount)",
+  "function burn(address from, uint256 amount)",
+  "function getBalance() view returns (uint256)",
+  "function getTotalSupply() view returns (uint256)",
+  "function owner() view returns (address)",
+];
+
 export const SecureVaultABI = [
   "function deposit() payable",
   "function withdraw(uint256 amount)",
