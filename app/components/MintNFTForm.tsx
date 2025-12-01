@@ -25,6 +25,7 @@ export default function MintNFTForm({ signer, userAddress }: MintNFTFormProps) {
     }
 
     if (!tokenURI.trim()) {
+      console.log("No token URI entered");
       setError("Please enter a token URI");
       return;
     }
