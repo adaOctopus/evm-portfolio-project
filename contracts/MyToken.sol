@@ -16,7 +16,7 @@ import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
  * @title MyToken
  * @dev A simple ERC20 token contract with minting capabilities
  */
-contract MyToken is ERC20, Ownable {
+contract MyToken is ERC20, Ownable, ReentrancyGuard {
     uint256 public constant INITIAL_SUPPLY = 1000000 * 10**18; // 1 million tokens with 18 decimals
 
     event Withdraw(address indexed to, uint256 amount); 
